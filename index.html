@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Clima (datos sintéticos) — Calendario</title>
+  <link rel="stylesheet" href="estilos.css" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+  <main class="container">
+    <header class="topbar">
+      <h1>Consulta de Clima</h1>
+      <p class="subtitle">Seleccioná una fecha en el calendario para ver el clima estimado.</p>
+    </header>
+            <!-- Calendario -->
+    <section class="calendario">
+        <label for="fecha">Selecciona una fecha:</label>
+        <input type="date" id="fecha">
+    </section>
+        <!-- Datos del clima -->
+    <section class="info-clima">
+        <h2>Clima del día seleccionado</h2>
+        <p><strong>Temperatura actual:</strong> <span id="temp"></span></p>
+         <p><strong>Humedad:</strong> <span id="humedad"></span></p>
+        <p><strong>Estado:</strong> <span id="estado"></span></p>
+    </section>
+
+        <!-- Gráfico de temperatura -->
+     <section class="grafico">
+        <h2>Temperatura durante el día</h2>
+        <canvas id="graficoTemp"></canvas>
+    </section>
+
+    
+    <section class="content">
+      <article class="calendar-card">
+        <div class="cal-header">
+          <button id="prev-month" aria-label="Mes anterior">‹</button>
+          <div class="cal-title" id="month-year">Marzo 2025</div>
+          <button id="next-month" aria-label="Mes siguiente">›</button>
+        </div>
+
+        <div class="weekdays" aria-hidden="true">
+          <div>Dom</div><div>Lun</div><div>Mar</div><div>Mié</div><div>Jue</div><div>Vie</div><div>Sáb</div>
+        </div>
+
+        <div id="calendar-grid" class="calendar-grid" role="grid" aria-label="Calendario"></div>
+      </article>
+
+      <aside class="weather-card" id="weather-panel" aria-live="polite">
+        <h2 id="selected-date">Fecha seleccionada</h2>
+
+        <div class="weather-main">
+          <div class="weather-icon" id="weather-icon" aria-hidden="true">
+            <!-- ícono svg inyectado por JS -->
+          </div>
+
+          <div class="weather-info">
+            <div class="temp" id="temp">-- °C</div>
+            <div class="desc" id="desc">--</div>
+            <div class="extra">
+              <span id="prec">Precip: --%</span>
+              <span id="wind">Viento: -- km/h</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="notes">
+          <p><strong>Nota:</strong> Los datos son <em>sintéticos</em> y generados localmente para pruebas.</p>
+        </div>
+      </aside>
+    </section>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>

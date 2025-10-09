@@ -1,0 +1,229 @@
+:root{
+  --bg:#0f1724;
+  --card:#0b1220;
+  --muted:#9aa6b2;
+  --accent:#60a5fa;
+  --accent-2:#7c3aed;
+  --glass: rgba(255,255,255,0.03);
+  --white:#e6eef6;
+}
+
+*{box-sizing:border-box}
+html,body{height:100%}
+body{
+  margin:0;
+  font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+  background: linear-gradient(180deg,var(--bg), #071022 140%);
+  color:var(--white);
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
+  padding:28px;
+}
+
+
+/* Calendario */
+.calendario {
+    margin-bottom: 20px;
+}
+
+.calendario label {
+    font-weight: bold;
+    margin-right: 10px;
+}
+
+input[type="date"] {
+    padding: 8px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+/* Información del clima */
+.info-clima {
+    margin: 20px 0;
+    padding: 15px;
+    background: #00203e;
+    border-left: 5px solid #4a90e2;
+    border-radius: 5px;
+}
+
+.info-clima h2 {
+    margin-top: 0;
+}
+
+/* Gráfico */
+.grafico {
+    margin-top: 30px;
+}
+
+canvas {
+    width: 100% !important;
+    max-height: 350px;
+}
+
+/* Container */
+.container{
+  max-width:1100px;
+  margin:0 auto;
+}
+
+/* Header */
+.topbar{
+  margin-bottom:20px;
+}
+.topbar h1{
+  margin:0;
+  font-size:1.6rem;
+  letter-spacing: -0.4px;
+}
+.subtitle{
+  margin:6px 0 0 0;
+  color:var(--muted);
+  font-size:0.95rem;
+}
+
+/* Layout */
+.content{
+  display:grid;
+  grid-template-columns: 1fr 340px;
+  gap:20px;
+  align-items:start;
+}
+
+/* Card */
+.calendar-card, .weather-card{
+  background: linear-gradient(180deg,var(--card), rgba(10,14,20,0.6));
+  border-radius:10px;
+  padding:14px;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.5);
+  border: 1px solid rgba(255,255,255,0.03);
+}
+
+/* Calendar header */
+.cal-header{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+  margin-bottom:10px;
+}
+.cal-header button{
+  background:var(--glass);
+  border: none;
+  color:var(--white);
+  width:36px; height:36px;
+  border-radius:8px;
+  cursor:pointer;
+  font-size:1.4rem;
+}
+.cal-title{
+  font-weight:600;
+  text-align:center;
+}
+
+/* Weekdays */
+.weekdays{
+  display:grid;
+  grid-template-columns: repeat(7,1fr);
+  font-size:0.85rem;
+  color:var(--muted);
+  margin-bottom:8px;
+}
+
+/* Grid */
+.calendar-grid{
+  display:grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap:8px;
+}
+
+/* Day cell */
+.day{
+  min-height:76px;
+  background: rgba(255,255,255,0.02);
+  border-radius:8px;
+  padding:8px;
+  position:relative;
+  cursor:pointer;
+  transition: transform .08s ease, box-shadow .08s ease;
+  border:1px solid transparent;
+}
+.day:hover{
+  transform: translateY(-3px);
+  box-shadow: 0 6px 18px rgba(0,0,0,0.45);
+}
+.day .date-num{
+  font-weight:600;
+}
+.day .meta{
+  margin-top:8px;
+  font-size:0.82rem;
+  color:var(--muted);
+}
+
+/* Muted days (prev/next month) */
+.day.muted{
+  opacity:0.45;
+}
+
+/* Selected */
+.day.selected{
+  outline: 2px solid transparent;
+  box-shadow: 0 6px 18px rgba(96,165,250,0.12);
+  background: linear-gradient(180deg, rgba(96,165,250,0.08), rgba(124,58,237,0.03));
+  border: 1px solid rgba(96,165,250,0.18);
+}
+
+/* Today badge */
+.day.today{
+  border:1px dashed rgba(255,255,255,0.06);
+}
+
+/* Weather panel */
+.weather-card{
+  position:sticky;
+  top:28px;
+  height:min-content;
+}
+.weather-main{
+  display:flex;
+  gap:12px;
+  align-items:center;
+  margin-top:8px;
+}
+.weather-icon{
+  width:84px;
+  height:84px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  border-radius:12px;
+  background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+}
+.weather-info .temp{
+  font-size:1.8rem;
+  font-weight:700;
+}
+.weather-info .desc{
+  color:var(--muted);
+  margin-top:6px;
+}
+.extra{
+  margin-top:8px;
+  color:var(--muted);
+  font-size:0.9rem;
+  display:flex;
+  gap:10px;
+}
+
+/* Notes */
+.notes{
+  margin-top:12px;
+  font-size:0.85rem;
+  color:var(--muted);
+}
+
+/* Responsive */
+@media (max-width:900px){
+  .content{grid-template-columns:1fr; }
+  .weather-card{ position:relative; top:0;}
+}
