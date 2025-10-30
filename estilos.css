@@ -1,19 +1,59 @@
 :root{
   --bg:#0f1724;
+  --bg2:#151d30;
   --card:#0b1220;
   --muted:#9aa6b2;
-  --accent:#60a5fa;
-  --accent-2:#7c3aed;
+  --accent:#3788ea;
+  --accent-2:#5b29b2;
+  --accent-mc:#3788ea;
+  --accent-mc2:#5b29b2;
   --glass: rgba(255,255,255,0.03);
   --white:#e6eef6;
+  --button-bg: rgba(35, 9, 77, 0.512);
+  --button-bg2: rgba(96, 165, 250, 0.1);
+  --title-color1: #6aabfa;
+  --title-color2: #f3f4f6;
+  --shadow: black 0px 1px 20px -5px, rgba(0, 0, 0, 0.06) 0px 2px 4px -1px;
+  --day-selected-box-shadow:  0 6px 18px rgba(96,165,250,0.12);
+  --box-bg: rgba(32, 23, 55, 0.264);
+  --box-bg2: rgb(56, 12, 114);
 }
+
+/* Modo claro */
+.ligth-mode {
+  --bg:#e4dbff;
+  --bg2:#f9f5ff;
+  --card:#ffffff;
+  --muted:#32363c;
+  --accent:#3b82f6;
+  --accent-2:#8b5cf6;
+  --accent-mc:#0a4d9f;
+  --accent-mc2:#2d0c66;
+  --glass: rgba(255,255,255,0.6);
+  --white:#1f2937;
+  --button-bg: rgba(232, 231, 231, 0.512);
+  --button-bg2: rgba(59, 130, 246, 0.1);
+  --title-color1: #0a2648;
+  --title-color2: #374151;
+  --shadow: black 0px 0px 15px -5px, rgba(0, 0, 0, 0.06) 0px 2px 4px -1px;
+  --day-selected-box-shadow:  0 6px 18px rgba(0, 0, 0, 0.213);
+  --box-bg: rgba(35, 7, 71, 0.342);
+  --box-bg2: rgba(181, 170, 238, 0.731);
+}
+
+.container .topbar h1{
+  font-size: 300%;
+  text-align: center;
+}
+
+/* Fondos y tipografía */
 
 *{box-sizing:border-box}
 html,body{height:100%}
 body{
   margin:0;
   font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
-  background: linear-gradient(180deg,var(--bg), #071022 140%);
+  background: linear-gradient(var(--bg), var(--bg2), var(--bg));
   color:var(--white);
   -webkit-font-smoothing:antialiased;
   -moz-osx-font-smoothing:grayscale;
@@ -26,24 +66,54 @@ body{
     margin-bottom: 20px;
 }
 
+.calendario input{
+  box-shadow: var(--shadow);
+  opacity: 0%;
+}
+
 .calendario label {
     font-weight: bold;
+    font-size: xx-large;
     margin-right: 10px;
+    margin-top: 40px;
 }
 
 input[type="date"] {
     padding: 8px;
     border-radius: 5px;
     border: 1px solid #ccc;
+    background-color: var(--box-bg2);
+    font-size: x-large;
+    font-weight:bold;
+    color: var(--white);
+}
+
+.selectores-variables select{
+  padding: 1%;
+  font-size: x-large;  
+  letter-spacing: 1px;
+  box-shadow: var(--shadow);
+}
+
+
+.estadisticas label{
+  font-size: larger;
+  font-weight: 500;
+}
+
+.stat-card p{
+  font-size: large;
+  font-weight: 500;
 }
 
 /* Información del clima */
 .info-clima {
     margin: 20px 0;
     padding: 15px;
-    background: #00203e;
+    background: var(--bg);
     border-left: 5px solid #4a90e2;
-    border-radius: 5px;
+    border-radius: 10px;
+    box-shadow: var(--shadow);
 }
 
 .info-clima h2 {
@@ -85,17 +155,23 @@ canvas {
 .content{
   display:grid;
   grid-template-columns: 1fr 340px;
-  gap:20px;
+  gap:10px;
   align-items:start;
+  margin-top: -50px;
 }
 
 /* Card */
 .calendar-card, .weather-card{
-  background: linear-gradient(180deg,var(--card), rgba(10,14,20,0.6));
+  background: linear-gradient(var(--card), var(--button-bg));
   border-radius:10px;
   padding:14px;
-  box-shadow: 0 6px 20px rgba(0,0,0,0.5);
-  border: 1px solid rgba(255,255,255,0.03);
+  box-shadow: var(--shadow);
+  border: 1px solid rgba(255, 255, 255, 0.003);
+}
+
+.weather-info, desc{
+  font-size: x-large;
+  font-weight: bold;
 }
 
 /* Calendar header */
@@ -139,7 +215,7 @@ canvas {
 /* Day cell */
 .day{
   min-height:76px;
-  background: rgba(255,255,255,0.02);
+  background: rgba(4, 59, 111, 0.111);
   border-radius:8px;
   padding:8px;
   position:relative;
@@ -168,8 +244,8 @@ canvas {
 /* Selected */
 .day.selected{
   outline: 2px solid transparent;
-  box-shadow: 0 6px 18px rgba(96,165,250,0.12);
-  background: linear-gradient(180deg, rgba(96,165,250,0.08), rgba(124,58,237,0.03));
+  box-shadow:var(--day-selected-box-shadow);
+  background: linear-gradient(180deg, rgba(96, 165, 250, 0.243), rgba(133, 76, 232, 0.195));
   border: 1px solid rgba(96,165,250,0.18);
 }
 
@@ -226,4 +302,461 @@ canvas {
 @media (max-width:900px){
   .content{grid-template-columns:1fr; }
   .weather-card{ position:relative; top:0;}
+}
+/* Nuevos estilos para las secciones agregadas */
+.consultas-avanzadas {
+    background: var(--card);
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 20px;
+    border: 1px solid rgba(255,255,255,0.03);
+    box-shadow: var(--shadow);
+    margin-top: 30px;
+    
+}
+
+.consultas-avanzadas h3 {
+    margin-top: 0;
+    color: var(--title-color1);
+    font-size: x-large;
+}
+
+
+
+.rango-fechas, .estadisticas {
+    margin-bottom: 15px;
+    margin-top: 15px;
+    font-size: large;
+}
+
+.rango-fechas input{
+  box-shadow: var(--shadow);
+  font-size: x-large;
+}
+
+.rango-fechas label, label, .estadisticas label {
+    display: block;
+    margin-bottom: 5px;
+    color: var(--muted);
+}
+
+.selector-hora input{
+    margin-bottom: 15px;
+    font-size: x-large;
+    color: var(--white);
+    background: rgba(255,255,255,0.05);
+}
+
+#variables-select {
+    width: 100%;
+    padding: 8px;
+    border-radius: 5px;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.1);
+    color: var(--white);
+}
+
+#variables-select {
+  background-color: #c9d7f3;
+  color: black;
+}
+
+.estadisticas label {
+    display: inline-block;
+    margin-right: 15px;
+}
+
+#aplicar-consulta {
+    background: var(--accent);
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+#aplicar-consulta:hover {
+  background-color: #4caf50;
+  transform: scale(1.05);
+  transition: all 0.3s ease;
+  box-shadow: 0 0 10px #4caf50;
+}
+
+
+.panel-estadisticas {
+    background: var(--card);
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 20px;
+    border: 1px solid rgba(255, 255, 255, 0);
+    box-shadow: var(--shadow)
+}
+
+.panel-estadisticas h3{
+    color: var(--title-color1);
+    margin-top: 0;
+}
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 15px;
+}
+
+.stat-card {
+    background: rgba(79, 79, 79, 0.161);
+    padding: 15px;
+    border-radius: 8px;
+    border-left: 4px solid var(--accent);
+}
+
+.stat-card h4 {
+    margin-top: 0;
+    color: var(--title-color2);
+}
+
+.stat-card p {
+    margin: 5px 0;
+    color: var(--muted);
+}
+
+
+.diagnostico {
+    background: var(--bg);
+    border-radius: 10px;
+    padding: 20px;
+    margin-top: 20px;
+    border: 1px solid rgba(255,255,255,0.03);
+}
+
+.diagnostico h3 {
+    margin-top: 0;
+    color: var(--title-color1);
+    margin-bottom: 15px;
+}
+
+.btn-diagnostico {
+    background: var(--accent-2);
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-right: 10px;
+    margin-bottom: 10px;
+    font-size: 0.9rem;
+}
+.btn-diagnostico {
+    background: linear-gradient(var(--accent-2), var(--accent));
+    box-shadow: black 0px 4px 6px -1px, rgba(0, 0, 0, 0.06) 0px 2px 4px -1px;
+    transform: none;
+}
+
+.btn-diagnostico:hover {
+    background: linear-gradient(180deg, rgba(96,165,250,0.08), rgba(124,58,237,0.03));
+    transform: translateY(-1px);
+}
+
+.diagnostico button{
+  box-shadow: var(--shadow);
+}
+
+#estado-firebase {
+    background: rgba(255,255,255,0.05);
+    border-radius: 5px;
+    min-height: 40px;
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    font-family: monospace;
+}
+
+.btn-modo-claro {
+  background: linear-gradient(90deg, var(--accent-mc), var(--accent-mc2));
+  color: white;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 9px; /* pill */
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 600;
+  font-size: 0.95rem;
+  cursor: pointer;
+  min-height: 40px;
+  box-shadow: 0 8px 20px rgba(5,10,20,0.45), inset 0 1px 0 rgba(255,255,255,0.06);
+  transition: transform .14s ease, box-shadow .14s ease, opacity .14s ease;
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  margin-top: 5px;
+}
+/* interacción */
+.btn-modo-claro:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 28px rgba(5,10,20,0.55);
+  opacity: 0.98;
+}
+.btn-modo-claro:active {
+  transform: translateY(0) scale(.99);
+  box-shadow: 0 6px 14px rgba(5,10,20,0.35);
+}
+.btn-modo-claro:focus {
+  outline: 3px solid rgba(93, 120, 255, 0.18);
+  outline-offset: 3px;
+}
+/* pequeña mejora para el icono si quieres tamaño distinto */
+.btn-modo-claro .icon {
+  display: inline-flex;
+  font-size: 1.05rem;
+  line-height: 1;
+}
+/* responsive: en pantallas pequeñas que no quepa, ajusta tamaño */
+@media (max-width: 480px) {
+  .btn-modo-claro {
+    padding: 7px 10px;
+    font-size: 0.9rem;
+    min-height: 36px;
+  }
+}
+
+
+/* Validaciones y estados del botón */
+#aplicar-consulta:disabled {
+  background: var(--muted) !important;
+  cursor: not-allowed;
+  transform: none !important;
+  box-shadow: none !important;
+}
+
+#aplicar-consulta:disabled:hover {
+  background: var(--muted) !important;
+  transform: none !important;
+}
+
+.animando {
+  animation: pulse 0.6s ease-in-out;
+}
+
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+  100% { transform: scale(1); }
+}
+
+/* Mejoras para los controles de formulario */
+.rango-fechas input[type="date"] {
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.1);
+  color: var(--white);
+  padding: 8px;
+  border-radius: 5px;
+  margin-right: 10px;
+}
+
+
+.estadisticas input[type="checkbox"] {
+  margin-right: 5px;
+}
+
+/* Estados de validación */
+input:invalid, select:invalid {
+  border-color: #ff4444 !important;
+}
+
+input:valid, select:valid {
+  border-color: #00C851 !important;
+}
+
+.selector-hora label{
+  font-size: larger;
+  font-weight: bold;
+}
+
+.selector-hora input{
+  padding: 5px;
+  border-radius: 5px;
+  font-size: x-large;
+  box-shadow: var(--shadow);
+}
+
+/* Menu desplegable */
+.dropdown-multiselect {
+    position: relative;
+    width: 100%;
+    margin: 10px 0;
+}
+
+.dropdown-toggle {
+    width: 100%;
+    padding: 12px 16px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    color: var(--white);
+    font-size: 1rem;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: all 0.3s ease;
+}
+
+.dropdown-toggle:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.2);
+}
+
+.dropdown-toggle:focus {
+    outline: none;
+    border-color: var(--accent);
+    box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
+}
+
+.dropdown-arrow {
+    font-size: 0.8rem;
+    transition: transform 0.3s ease;
+}
+
+.dropdown-multiselect.active .dropdown-arrow {
+    transform: rotate(180deg);
+}
+
+.dropdown-menu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: var(--card);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    padding: 8px;
+    margin-top: 4px;
+    box-shadow: var(--shadow);
+    z-index: 1000;
+    display: none;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.dropdown-multiselect.active .dropdown-menu {
+    display: flex;
+}
+
+.dropdown-option {
+    display: flex;
+    align-items: center;
+    padding: 10px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    margin: 2px 0;
+}
+
+.dropdown-option:hover {
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.dropdown-option input[type="checkbox"] {
+    margin-right: 10px;
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+}
+
+/* Estilo personalizado para checkboxes */
+.dropdown-option input[type="checkbox"] {
+    appearance: none;
+    -webkit-appearance: none;
+    width: 18px;
+    height: 18px;
+    border: 2px solid var(--muted);
+    border-radius: 3px;
+    outline: none;
+    transition: all 0.2s;
+    position: relative;
+}
+
+.dropdown-option input[type="checkbox"]:checked {
+    background-color: var(--accent);
+    border-color: var(--accent);
+}
+
+.dropdown-option input[type="checkbox"]:checked::after {
+    content: "✓";
+    position: absolute;
+    color: white;
+    font-size: 12px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.dropdown-actions {
+    display: flex;
+    gap: 8px;
+    padding: 8px 0 4px 0;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    margin-top: 4px;
+}
+
+.btn-small {
+    background: var(--accent);
+    color: white;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.8rem;
+    transition: all 0.2s ease;
+    flex: 1;
+}
+
+.btn-small:hover {
+    background: var(--accent-2);
+    transform: translateY(-1px);
+}
+
+.selected-text {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* Para el modo claro */
+.ligth-mode .dropdown-toggle {
+    background: rgba(0, 0, 0, 0.05);
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    color: var(--white);
+}
+
+.ligth-mode .dropdown-toggle:hover {
+    background: rgba(0, 0, 0, 0.1);
+}
+
+.ligth-mode .dropdown-menu {
+    background: var(--card);
+    border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.ligth-mode .dropdown-option:hover {
+    background: rgba(0, 0, 0, 0.05);
+}
+
+.btn-secundario {
+    background: linear-gradient(var(--box-bg), var(--box-bg2));
+    color: var(--white);
+    border: none;
+    padding: 8px 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: large;
+    box-shadow: var(--shadow);
+    animation: pulse 0.2s ease-in-out, hoverEffect 0.2s ease-in-out;
+}
+
+.grafico label {
+    font-size: large;
+    font-weight: bold;
+    margin-bottom: 10px;
+    color: var(--white);
+    margin-left: 30%;
 }
