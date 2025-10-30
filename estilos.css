@@ -169,6 +169,10 @@ canvas {
   border: 1px solid rgba(255, 255, 255, 0.003);
 }
 
+.weather-card{
+  margin-left: 10px;
+}
+
 .weather-info, desc{
   font-size: x-large;
   font-weight: bold;
@@ -760,3 +764,4 @@ input:valid, select:valid {
     color: var(--white);
     margin-left: 30%;
 }
+
