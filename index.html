@@ -1,78 +1,204 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Clima (datos sintéticos) — Calendario</title>
-  <link rel="stylesheet" href="estilos.css" />
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Sistema de Monitoreo Ambiental</title>
+    <link rel="stylesheet" href="estilos.css" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
 </head>
 <body>
-  <main class="container">
-    <header class="topbar">
-      <h1>Consulta de Clima</h1>
-      <p class="subtitle">Seleccioná una fecha en el calendario para ver el clima estimado.</p>
-    </header>
-            <!-- Calendario -->
-    <section class="calendario">
-        <label for="fecha">Selecciona una fecha:</label>
-        <input type="date" id="fecha">
-    </section>
-        <!-- Datos del clima -->
-    <section class="info-clima">
-        <h2>Clima del día seleccionado</h2>
-        <p><strong>Temperatura actual:</strong> <span id="temp"></span></p>
-         <p><strong>Humedad:</strong> <span id="humedad"></span></p>
-        <p><strong>Estado:</strong> <span id="estado"></span></p>
-    </section>
+    <main class="container">
+        <header class="topbar">
+            <h1>Sistema de Monitoreo Ambiental</h1>
+            <button id="toggle-ligth" class="btn-modo-claro" type="button" aria-pressed="false">
+                <span class="icon" aria-hidden="true">☀️</span>
+                <span class="label">Modo claro</span>
+            </button>
+            <p class="subtitle">Monitoreo en tiempo real de variables ambientales - Datos sintéticos</p>
+        </header>
+        
+        <!-- Calendario -->
+        <section class="calendario">
+            <label for="fecha">Selecciona una fecha:</label>
+            <input type="date" id="fecha">
+        </section>
+
+        <!-- Calendario y Panel del Clima -->
+        <section class="content">
+            <article class="calendar-card">
+                <div class="cal-header">
+                    <button id="prev-month" aria-label="Mes anterior">‹</button>
+                    <div class="cal-title" id="month-year">Marzo 2025</div>
+                    <button id="next-month" aria-label="Mes siguiente">›</button>
+                </div>
+
+                <div class="weekdays" aria-hidden="true">
+                    <div>Dom</div><div>Lun</div><div>Mar</div><div>Mié</div><div>Jue</div><div>Vie</div><div>Sáb</div>
+                </div>
+
+                <div id="calendar-grid" class="calendar-grid" role="grid" aria-label="Calendario"></div>
+            </article>
+
+            <aside class="weather-card" id="weather-panel" aria-live="polite">
+                <h2 id="selected-date">Fecha seleccionada</h2>
+                <div class="weather-main">
+                    <div class="weather-icon" id="weather-icon" aria-hidden="true">
+                        <!-- ícono svg -->
+                    </div>
+                    <div class="weather-info">
+                        <div class="temp" id="temp-display">-- °C</div>
+                        <div class="desc" id="desc">--</div>
+                        <div class="extra">
+                            <span id="prec">Precipitacion: --%</span>
+                            <span id="wind">Viento: -- km/h</span>
+                        </div>
+                    </div>
+                </div>
+            </aside>
+        </section>
+        
+
+        <!-- Consultas Avanzadas -->
+        <section class="consultas-avanzadas">
+            <h3>Consultas Avanzadas</h3>
+            <div class="rango-fechas">
+                <label>Rango de fechas:</label>
+                <input type="date" id="fecha-inicio">
+                <input type="date" id="fecha-fin">
+            </div>
+            <div class="selector-hora">
+                <label>Hora específica (opcional):</label>
+                <input type="time" id="hora-especifica" value="12:00">
+            </div>
+            <div class="selectores-variables">
+              <label>Variables a mostrar:</label>
+              <div class="dropdown-multiselect">
+                  <button type="button" class="dropdown-toggle" id="variables-toggle">
+                      <span class="selected-text">Seleccionar variables...</span>
+                      <span class="dropdown-arrow">▼</span>
+                  </button>
+                  <div class="dropdown-menu" id="variables-menu">
+                      <label class="dropdown-option">
+                          <input type="checkbox" name="variables" value="temperatura" checked>
+                          <span class="checkmark"></span>
+                          Temperatura
+                      </label>
+                      <label class="dropdown-option">
+                          <input type="checkbox" name="variables" value="humedad" checked>
+                          <span class="checkmark"></span>
+                          Humedad
+                      </label>
+                      <label class="dropdown-option">
+                          <input type="checkbox" name="variables" value="precipitacion" checked>
+                          <span class="checkmark"></span>
+                          Precipitación
+                      </label>
+                      <label class="dropdown-option">
+                          <input type="checkbox" name="variables" value="viento" checked>
+                          <span class="checkmark"></span>
+                          Viento
+                      </label>
+                      <div class="dropdown-actions">
+                          <button type="button" id="select-all-vars" class="btn-small">Todos</button>
+                          <button type="button" id="clear-vars" class="btn-small">Ninguno</button>
+                      </div>
+                  </div>
+              </div>
+            </div>
+            <div class="estadisticas">
+                <label>Estadísticas a calcular:</label>
+                <label><input type="checkbox" name="stats" value="promedio" checked> Promedio</label>
+                <label><input type="checkbox" name="stats" value="maximo" checked> Máximo</label>
+                <label><input type="checkbox" name="stats" value="minimo" checked> Mínimo</label>
+            </div>
+            <div class="filtros-avanzados">
+                <label><input type="checkbox" id="filtro-atipicos"> Filtrar valores atípicos</label>
+            </div>
+            <button id="aplicar-consulta" class="btn-principal">Aplicar Consulta</button>
+        </section>
+
+        <!-- Panel de Estadísticas -->
+        <section class="panel-estadisticas">
+            <h3>Estadísticas del Período</h3>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <h4>Temperatura</h4>
+                    <p>Max: <span id="temp-max">--</span>°C</p>
+                    <p>Min: <span id="temp-min">--</span>°C</p>
+                    <p>Prom: <span id="temp-prom">--</span>°C</p>
+                </div>
+                <div class="stat-card">
+                    <h4>Humedad</h4>
+                    <p>Max: <span id="hum-max">--</span>%</p>
+                    <p>Min: <span id="hum-min">--</span>%</p>
+                    <p>Prom: <span id="hum-prom">--</span>%</p>
+                </div>
+                <div class="stat-card">
+                    <h4>Precipitación</h4>
+                    <p>Max: <span id="prec-max">--</span>%</p>
+                    <p>Min: <span id="prec-min">--</span>%</p>
+                    <p>Prom: <span id="prec-prom">--</span>%</p>
+                </div>
+                <div class="stat-card">
+                    <h4>Viento</h4>
+                    <p>Max: <span id="viento-max">--</span> km/h</p>
+                    <p>Min: <span id="viento-min">--</span> km/h</p>
+                    <p>Prom: <span id="viento-prom">--</span> km/h</p>
+                </div>
+            </div>
+        </section>
+
 
         <!-- Gráfico de temperatura -->
-     <section class="grafico">
-        <h2>Temperatura durante el día</h2>
-        <canvas id="graficoTemp"></canvas>
-    </section>
-
-    
-    <section class="content">
-      <article class="calendar-card">
-        <div class="cal-header">
-          <button id="prev-month" aria-label="Mes anterior">‹</button>
-          <div class="cal-title" id="month-year">Marzo 2025</div>
-          <button id="next-month" aria-label="Mes siguiente">›</button>
-        </div>
-
-        <div class="weekdays" aria-hidden="true">
-          <div>Dom</div><div>Lun</div><div>Mar</div><div>Mié</div><div>Jue</div><div>Vie</div><div>Sáb</div>
-        </div>
-
-        <div id="calendar-grid" class="calendar-grid" role="grid" aria-label="Calendario"></div>
-      </article>
-
-      <aside class="weather-card" id="weather-panel" aria-live="polite">
-        <h2 id="selected-date">Fecha seleccionada</h2>
-
-        <div class="weather-main">
-          <div class="weather-icon" id="weather-icon" aria-hidden="true">
-            <!-- ícono svg inyectado por JS -->
-          </div>
-
-          <div class="weather-info">
-            <div class="temp" id="temp">-- °C</div>
-            <div class="desc" id="desc">--</div>
-            <div class="extra">
-              <span id="prec">Precip: --%</span>
-              <span id="wind">Viento: -- km/h</span>
+        <section class="grafico">
+            <h2>Temperatura durante el día</h2>
+            <label>Evolución de la temperatura durante el día</label>
+            <canvas id="graficoTemp"></canvas>
+        </section>
+        <!-- Gráficos Avanzados -->
+        <section class="grafico" id="seccion-grafico-avanzado" style="display: none;">
+            <h2>Variables climaticas</h2>
+            <div class="controles-grafico">
+                <button id="btn-cambiar-vista" class="btn-secundario">Cambiar a Vista de Barras</button>
             </div>
-          </div>
+            <canvas id="graficoAvanzado"></canvas>
+        </section>
+
+        <section class="grafico" id="seccion-grafico-barras" style="display: none;">
+            <h2>Comparación entre Días - Vista de Barras</h2>
+            <div class="controles-grafico">
+                <button id="btn-cambiar-lineas" class="btn-secundario">Cambiar a Vista de Líneas</button>
+            </div>
+            <canvas id="graficoBarras"></canvas>
+        </section>
+
+        <!-- Exportación y Utilidades -->
+        <section class="diagnostico">
+            <h3>Exportación de Datos</h3>
+            <button id="btn-csv" class="btn-diagnostico">Exportar CSV</button>
+            <button id="btn-pdf" class="btn-diagnostico">Exportar PDF</button>
+        </section>
+
+        <!-- Datos del clima -->
+        <section class="info-clima">
+            <h2>Clima del día seleccionado</h2>
+            <p><strong>Temperatura actual:</strong> <span id="temp">--</span></p>
+            <p><strong>Humedad:</strong> <span id="humedad">--</span></p>
+            <p><strong>Estado:</strong> <span id="estado">--</span></p>
+        </section>
+
+
+        <!-- Estado del Sistema -->
+        <div id="estado-firebase" class="estado-sistema">
+            Estado del sistema: Listo para consultas
         </div>
 
-        <div class="notes">
-          <p><strong>Nota:</strong> Los datos son <em>sintéticos</em> y generados localmente para pruebas.</p>
-        </div>
-      </aside>
-    </section>
-  </main>
-
-  <script src="script.js"></script>
+    </main>
+    <script src="script.js"></script>
 </body>
 </html>
